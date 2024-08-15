@@ -11,7 +11,9 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     libpq-dev \
-    && docker-php-ext-install pdo pdo_pgsql
+    && docker-php-ext-install pdo pdo_pgsql \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs=20.16.0-1nodesource1
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -19,7 +21,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Copy the existing application directory contents
 COPY . .
 
-# Install Symfony and API Platform dependencies
+# Install Symfony
 RUN composer create-project symfony/skeleton
 
 # Expose port 9000 and start php-fpm server
